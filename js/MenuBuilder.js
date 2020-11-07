@@ -46,7 +46,16 @@ class MenuBuilder {
   }
 
   buildCharts() {
-    const ctx = document.getElementById('x1-chart').getContext('2d');
+    let canvasX1 = document.getElementById('x1-chart');
+    if (canvasX1) canvasX1.remove();
+
+    canvasX1 = document.createElement('canvas');
+    canvasX1.id = 'x1-chart';
+    canvasX1.height = '240';
+
+    document.querySelector('.x1-wrapper').appendChild(canvasX1);
+
+    const ctx = canvasX1.getContext('2d');
     this.chatBuilder = new ChartBuilder(this.fuzzySystem.x1Axis, '', ctx);
   }
 }
