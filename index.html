@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covid Predictions</title>
+
+    <script type="text/javascript" src="libs/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="libs/Chart.min.js"></script>
+    <link rel="stylesheet" href="libs/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <header></header>
+    <main class="row m-0 justify-content-around">
+        <div class="side-data col-sm-12 col-md-5 col-lg-4 col-xl-3">
+            <div class="input-excel custom-file mb-1">
+                <input class="input_xls custom-file-input" type="file" id="xls-file-input">
+                <label class="custom-file-label" for="xls-file-input" aria-describedby="inputGroupFileAddon02">Choose
+                    file</label>
+            </div>
+            <div class="countries-wrapper">
+                <div class="countries-list"></div>
+            </div>
+            <div class="invalid-countries"></div>
+        </div>
+        <div class="data-display col-sm-12 col-md-6 col-lg-8 col-xl-9 p-0">
+            <div class="x1-wrapper">
+                <canvas height="240" id="x1-chart"></canvas>
+            </div>
+        </div>
+
+    </main>
+    <footer></footer>
+
+    <script src="libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script defer src="js/Worksheet.js"></script>
+    <script defer src="js/Axis.js"></script>
+    <script defer src="js/FuzzySystem.js"></script>
+    <script defer src="js/ChartBuilder.js"></script>
+    <script defer src="js/MenuBuilder.js"></script>
+    <script defer src="js/script.js"></script>
+
+</body>
+
+</html>
