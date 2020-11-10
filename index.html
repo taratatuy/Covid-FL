@@ -10,6 +10,8 @@
     <script type="text/javascript" src="libs/Chart.min.js"></script>
     <link rel="stylesheet" href="libs/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="rulesList.css">
+    <link rel="stylesheet" href="scrollbar.css">
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -31,7 +33,7 @@
             </div>
             <div class="invalid-countries"></div>
         </div>
-        <div class="data-display col-sm-12 col-md-6 col-lg-8 col-xl-9 p-0">
+        <div class="data-display col-sm-12 col-md-6 col-lg-8 col-xl-8 p-0">
             <div class="x1-wrapper">
                 <!-- <canvas height="300" id="x1-chart"></canvas> -->
             </div>
@@ -41,12 +43,21 @@
             <div class="y-wrapper">
                 <!-- <canvas height="300" id="y-chart"></canvas> -->
             </div>
+            <div class="rules-tabels-wrapper">
+                <div class="rules-list-wrapper">
+                    <div class="rules-list"> </div>
+                </div>
+                <div class="rules-list-wrapper">
+                    <div class="rules-list rules-list-sorted"> </div>
+                </div>
+            </div>
         </div>
 
     </main>
     <footer></footer>
 
     <script src="libs/bootstrap/bootstrap.bundle.min.js"></script>
+    <script defer src="js/tools.js"></script>
     <script defer src="js/Worksheet.js"></script>
     <script defer src="js/Axis.js"></script>
     <script defer src="js/FuzzySystem.js"></script>

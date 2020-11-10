@@ -35,6 +35,7 @@ class FuzzySystem {
     const rulesList = [];
     for (let i = 0; i < this.x1Axis.baseData.length; i++) {
       rulesList.push({
+        number: i,
         x1: this.x1Axis.baseData[i],
         x2: this.x2Axis.baseData[i],
         y: this.yAxis.baseData[i],

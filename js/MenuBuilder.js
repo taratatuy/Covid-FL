@@ -5,26 +5,132 @@ class MenuBuilder {
     this.invalidDataLines = invalidDataLines;
     this.countriesListEl = document.querySelector('.countries-list');
     this.invalidDataLinesEl = document.querySelector('.invalid-countries');
+    this.unsortedRulesListEl = document.querySelector('.rules-list');
+    this.sortedRulesListEl = document.querySelector('.rules-list-sorted');
+
     this.displayCountries();
     this.buildChart('x1-chart', 'x1-wrapper', fuzzySystem.x1Axis, 'X1');
     this.buildChart('x2-chart', 'x2-wrapper', fuzzySystem.x2Axis, 'X2');
     this.buildChart('y1-chart', 'y-wrapper', fuzzySystem.yAxis, 'Y');
+
+    this._fillUnsortedRulesList();
+    this._fillSortedRulesList();
+  }
+
+  _sortRules() {
+    const conditionsX1 = {};
+    const conditionsX2 = {};
+    const conditionsY = {};
+
+    const x1Axis = this.fuzzySystem.x1Axis.regions;
+    const x2Axis = this.fuzzySystem.x2Axis.regions;
+    const yAxis = this.fuzzySystem.yAxis.regions;
+
+    for (let i = 0; i < x1Axis.length; i++) {
+      conditionsX1[x1Axis[i].label] = 10000 * (i + 1);
+      conditionsX2[x2Axis[i].label] = 100 * (i + 1);
+      conditionsY[yAxis[i].label] = 1 * (i + 1);
+    }
+
+    return function (a, b) {
+      return (
+        conditionsX1[a.x1.label] +
+        conditionsX2[a.x2.label] +
+        conditionsY[a.y.label] -
+        a.sp -
+        conditionsX1[b.x1.label] -
+        conditionsX2[b.x2.label] -
+        conditionsY[b.y.label] +
+        b.sp
+      );
+    };
+  }
+
+  _fillUnsortedRulesList() {
+    this.unsortedRulesListEl.innerHTML = '';
+    this._addRulesTabelsHeader(
+      'List of rules:',
+      this._addUnsortedRuleCell.bind(this)
+    );
+
+    const unsortedRulesList = this.fuzzySystem.rulesList;
+
+    for (let i = 0; i < unsortedRulesList.length; i++) {
+      const color = ColorLuminance('#95d5b2', 1 - unsortedRulesList[i].sp);
+      this._addUnsortedRuleCell(unsortedRulesList[i].number + 1);
+      this._addUnsortedRuleCell(unsortedRulesList[i].x1.label, color);
+      this._addUnsortedRuleCell(unsortedRulesList[i].x2.label, color);
+      this._addUnsortedRuleCell(unsortedRulesList[i].y.label, color);
+      this._addUnsortedRuleCell(+unsortedRulesList[i].sp.toFixed(3), color);
+    }
+  }
+
+  _fillSortedRulesList() {
+    this.sortedRulesListEl.innerHTML = '';
+    this._addRulesTabelsHeader(
+      'Sorted list of rules:',
+      this._addSortedRuleCell.bind(this)
+    );
+
+    const sortedRulesList = this.fuzzySystem.rulesList.sort(this._sortRules());
+
+    for (let i = 0; i < sortedRulesList.length; i++) {
+      const color = ColorLuminance('#95d5b2', 1 - sortedRulesList[i].sp);
+      this._addSortedRuleCell(sortedRulesList[i].number + 1);
+      this._addSortedRuleCell(sortedRulesList[i].x1.label, color);
+      this._addSortedRuleCell(sortedRulesList[i].x2.label, color);
+      this._addSortedRuleCell(sortedRulesList[i].y.label, color);
+      this._addSortedRuleCell(+sortedRulesList[i].sp.toFixed(3), color);
+    }
+  }
+
+  _addRulesTabelsHeader(label, addFunction) {
+    addFunction(label, '', 'head-label');
+    addFunction('N', '', 'head-number');
+    addFunction('IF', '', 'head-if');
+    addFunction('THEN', '', 'head-then');
+    addFunction('SP', '', 'head-sp');
+    addFunction('x1 is', '', 'head-x1');
+    addFunction('x2 is', '', 'head-x2');
+    addFunction('y is', '', 'head-y');
+  }
+
+  _addUnsortedRuleCell(innerText, color, cssClass = false) {
+    this._addRuleCell(innerText, '', this.unsortedRulesListEl, cssClass);
+  }
+
+  _addSortedRuleCell(innerText, color, cssClass = false) {
+    this._addRuleCell(innerText, color, this.sortedRulesListEl, cssClass);
+  }
+
+  _addRuleCell(innerText, color, elem, cssClass = false) {
+    const div = document.createElement('div');
+    div.innerText = innerText;
+    if (cssClass) div.className = cssClass;
+    div.style = `background-color: ${color}`;
+    elem.append(div);
   }
 
   displayCountries() {
     this.countriesListEl.innerHTML = '';
 
-    this._addLine('', 'Name', 'X1', 'X2', 'Y', true);
+    this._addCountryLine('', 'Name', 'X1', 'X2', 'Y', true);
 
     let i = 0;
     this.countriesList.forEach((country) => {
       i++;
-      this._addLine(`${i}.`, country.name, country.x1, country.x2, country.y);
+      this._addCountryLine(
+        `${i}.`,
+        country.name,
+        country.x1,
+        country.x2,
+        country.y
+      );
     });
     this.invalidDataLinesEl.innerText = `Invalid data lines: ${this.invalidDataLines}`;
   }
 
-  _addLine(i, name, x1, x2, y, bold = false) {
+  _addCountryLine(i, name, x1, x2, y, bold = false) {
     try {
       x1 = +x1.toFixed(4);
       x2 = +x2.toFixed(4);
