@@ -1,41 +1,55 @@
 class FuzzySystem {
   constructor(countriesList) {
     this.countriesList = countriesList;
-    this.N = 4; //TODO: Input
+    this.N = 2; //TODO: Input
     this.x1Axis = this._getAxis('x1');
     this.x2Axis = this._getAxis('x2');
     this.yAxis = this._getAxis('y');
-
-    this.setIntervals();
+    this.rulesList = this._getRulesList();
+    console.log(this.rulesList);
+    this.rulesBase = this._getRulesBase();
+    console.log(this.rulesBase);
   }
 
-  setIntervals() {
-    // this.x1Axis.min = Math.min(...this.x1Axis.values);
-    // this.x1Axis.max = Math.max(...this.x1Axis.values);
-    // this.x1Axis.interval = this.x1Axis.max - this.x1Axis.min;
+  _getRulesBase() {
+    const rulesBase = {};
 
-    // this.x2Axis.min = Math.min(...this.x2Axis.values);
-    // this.x2Axis.max = Math.max(...this.x2Axis.values);
-    // this.x2Axis.interval = this.x2Axis.max - this.x2Axis.min;
+    this.rulesList.forEach((r) => {
+      rulesBase[r.x1.label] = rulesBase[r.x1.label] || {};
+      rulesBase[r.x1.label][r.x2.label] = rulesBase[r.x1.label][r.x2.label] || {
+        label: '',
+        sp: 0,
+      };
 
-    // this.yAxis.min = Math.min(...this.yAxis.values);
-    // this.yAxis.max = Math.max(...this.yAxis.values);
-    // this.yAxis.interval = this.yAxis.max - this.yAxis.min;
+      if (rulesBase[r.x1.label][r.x2.label].sp < r.sp) {
+        rulesBase[r.x1.label][r.x2.label].label = r.y.label;
+        rulesBase[r.x1.label][r.x2.label].sp = r.sp;
+        rulesBase[r.x1.label][r.x2.label].rule = r;
+      }
+    });
 
-    // this._setPeaks(this.x1Axis);
-    // this._setPeaks(this.x2Axis);
-    // this._setPeaks(this.yAxis);
+    return rulesBase;
+  }
 
-    // this.x1Axis.funcM = this._funcionBuilder(760559, 1520749);
-    // this.x1Regions = this.x1Axis.regions;
+  _getRulesList() {
+    const rulesList = [];
+    for (let i = 0; i < this.x1Axis.baseData.length; i++) {
+      rulesList.push({
+        x1: this.x1Axis.baseData[i],
+        x2: this.x2Axis.baseData[i],
+        y: this.yAxis.baseData[i],
+        sp:
+          this.x1Axis.baseData[i].yValue *
+          this.x2Axis.baseData[i].yValue *
+          this.yAxis.baseData[i].yValue,
+      });
+    }
 
-    console.log(this.x1Axis);
-    console.log(this.x2Axis);
-    console.log(this.yAxis);
+    return rulesList;
   }
 
   /**
-   * Get input axis from an array of countries.
+   * Get axis from an array of countries.
    * @param {string} param - Label of the input axis: ('x1' | 'x2' | 'y').
    * @returns {Axis}
    * @private
@@ -43,7 +57,7 @@ class FuzzySystem {
   _getAxis(param) {
     const output = [];
     this.countriesList.forEach((country) => {
-      output.push(+country[param].replace(/,/g, '.'));
+      output.push(+`${country[param]}`.replace(/,/g, '.'));
     });
     return new Axis(output, this.N);
   }

@@ -6,7 +6,9 @@ class MenuBuilder {
     this.countriesListEl = document.querySelector('.countries-list');
     this.invalidDataLinesEl = document.querySelector('.invalid-countries');
     this.displayCountries();
-    this.buildCharts();
+    this.buildChart('x1-chart', 'x1-wrapper', fuzzySystem.x1Axis, 'X1');
+    this.buildChart('x2-chart', 'x2-wrapper', fuzzySystem.x2Axis, 'X2');
+    this.buildChart('y1-chart', 'y-wrapper', fuzzySystem.yAxis, 'Y');
   }
 
   displayCountries() {
@@ -23,6 +25,12 @@ class MenuBuilder {
   }
 
   _addLine(i, name, x1, x2, y, bold = false) {
+    try {
+      x1 = +x1.toFixed(4);
+      x2 = +x2.toFixed(4);
+      y = +y.toFixed(4);
+    } catch {}
+
     const counter = this._getCountryElRows(`${i}`, 'row1 bold');
     this.countriesListEl.append(counter);
     const countryName = this._getCountryElRows(
@@ -45,17 +53,17 @@ class MenuBuilder {
     return div;
   }
 
-  buildCharts() {
-    let canvasX1 = document.getElementById('x1-chart');
-    if (canvasX1) canvasX1.remove();
+  buildChart(canvasID, wrapperClass, axis, axisLabel) {
+    let canvas = document.getElementById(canvasID);
+    if (canvas) canvas.remove();
 
-    canvasX1 = document.createElement('canvas');
-    canvasX1.id = 'x1-chart';
-    canvasX1.height = '240';
+    canvas = document.createElement('canvas');
+    canvas.id = canvasID;
+    canvas.height = '300';
 
-    document.querySelector('.x1-wrapper').appendChild(canvasX1);
+    document.querySelector('.' + wrapperClass).appendChild(canvas);
 
-    const ctx = canvasX1.getContext('2d');
-    this.chatBuilder = new ChartBuilder(this.fuzzySystem.x1Axis, '', ctx);
+    const ctx = canvas.getContext('2d');
+    this.chatBuilder = new ChartBuilder(axis, axisLabel, ctx);
   }
 }

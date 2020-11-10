@@ -3,7 +3,7 @@
  */
 class Worksheet {
   /**
-   *Creating class for first worksheet
+   * Creating class for first worksheet
    * @param {Object} workbook - The workbok object from xlsx lib.
    */
   constructor(workbook) {

@@ -1,6 +1,7 @@
 class ChartBuilder {
-  constructor(axis, axisName, ctx) {
+  constructor(axis, axisLabel, ctx) {
     this.axis = axis;
+    this.axisLabel = axisLabel;
     this.ctx = ctx;
 
     this.config = this._getConfig();
@@ -24,18 +25,22 @@ class ChartBuilder {
   }
 
   _setRegionsValues() {
+    let i = 0;
+
     this.axis.regions.forEach((region) => {
       const values = [];
       this.axis.peaks.forEach((peak) => {
-        values.push(region(peak));
+        values.push(region.func(peak));
       });
-      this._addRegion('x', values, this._getColor());
+
+      this._addRegion(this.axis.regions[i].label, values, this._getColor());
+      i++;
     });
   }
 
   _getColor() {
     if (!this._colors || this._colors.length == 0)
-      this._colors = ['#264653', '#F4A261', '#2A9D8F', '#E9C46A', '#E76F51'];
+      this._colors = ['#264653', '#2A9D8F', '#E9C46A', '#F4A261', '#E76F51'];
 
     return this._colors.splice(0, 1);
   }
@@ -46,18 +51,7 @@ class ChartBuilder {
 
       data: {
         labels: this.axis.peaks,
-        datasets: [
-          // {
-          //   label: 'Interpolation',
-          //   // backgroundColor: 'orange',
-          //   // borderColor: 'orange',
-          //   data: [1, 2, 1, 2],
-          //   lineTension: 0,
-          //   fill: false,
-          //   borderWidth: 2,
-          //   pointRadius: 0,
-          // },
-        ],
+        datasets: [],
       },
 
       options: {
@@ -71,7 +65,7 @@ class ChartBuilder {
         title: {
           display: true,
           fontSize: 16,
-          text: '(Axis name: X1 | X2 | Y)',
+          text: `Mu(${this.axisLabel})`,
         },
         tooltips: {
           mode: 'index',
@@ -87,7 +81,7 @@ class ChartBuilder {
               display: true,
               scaleLabel: {
                 display: true,
-                labelString: '(Axis name: X1 | X2 | Y)',
+                labelString: this.axisLabel,
               },
             },
           ],
