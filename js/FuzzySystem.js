@@ -1,7 +1,7 @@
 class FuzzySystem {
-  constructor(countriesList) {
+  constructor(countriesList, N) {
     this.countriesList = countriesList;
-    this.N = 4; //TODO: Input
+    this.N = N;
     this.x1Axis = this._getAxis('x1');
     this.x2Axis = this._getAxis('x2');
     this.yAxis = this._getAxis('y');

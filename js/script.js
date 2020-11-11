@@ -16,13 +16,10 @@ function handleFile(e) {
 }
 
 const main = {
-  init: function () {
-    main.fuzzySystem = new FuzzySystem(main.countriesList);
-    new MenuBuilder(
-      main.countriesList,
-      main.invalidDataLines,
-      main.fuzzySystem
-    );
+  N: 2,
+  init() {
+    const fuzzySystem = new FuzzySystem(this.countriesList, this.N);
+    new MenuBuilder(this.countriesList, this.invalidDataLines, fuzzySystem);
   },
 };
 
