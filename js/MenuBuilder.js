@@ -3,6 +3,7 @@ class MenuBuilder {
     this.fuzzySystem = fuzzySystem;
     this.countriesList = countriesList;
     this.invalidDataLines = invalidDataLines;
+
     this.countriesListEl = document.querySelector('.countries-list');
     this.invalidDataLinesEl = document.querySelector('.invalid-countries');
     this.unsortedRulesListEl = document.querySelector('.rules-list');
@@ -15,6 +16,37 @@ class MenuBuilder {
 
     this._fillUnsortedRulesList();
     this._fillSortedRulesList();
+    this._buildRulesBase();
+  }
+
+  _buildRulesBase() {
+    const rulesBaseEl = document.querySelector('.rules-base');
+    const rulesBaseHeaderEl = document.querySelector('.rules-base-header');
+    rulesBaseEl.innerHTML = '';
+
+    this._addRuleCell('Rules base:', '', rulesBaseHeaderEl, 'head-label');
+    this._addRuleCell('', '', rulesBaseHeaderEl, 'head-legend');
+
+    const legend = document.querySelector('.head-legend');
+    this._addRuleCell('x1:', '', legend, '');
+    this._addRuleCell('', '', legend, 'x1Color color');
+    this._addRuleCell('x2:', '', legend, '');
+    this._addRuleCell('', '', legend, 'x2Color color');
+
+    this.fuzzySystem.rulesBase.forEach((line) => {
+      this._addRuleCell('', '', rulesBaseEl, 'rules-base-line');
+      const lineEl = document.querySelector(
+        '.rules-base > .rules-base-line:last-child'
+      );
+
+      line.forEach((cell) => {
+        const cellText = cell.label || '';
+        let cellColor = '';
+        if (cell.sp) cellColor = ColorLuminance('#95d5b2', 1 - cell.sp);
+
+        this._addRuleCell(cellText, cellColor, lineEl);
+      });
+    });
   }
 
   _sortRules() {
@@ -37,11 +69,11 @@ class MenuBuilder {
         conditionsX1[a.x1.label] +
         conditionsX2[a.x2.label] +
         conditionsY[a.y.label] -
-        a.sp -
+        a.sp / 10 -
         conditionsX1[b.x1.label] -
         conditionsX2[b.x2.label] -
         conditionsY[b.y.label] +
-        b.sp
+        b.sp / 10
       );
     };
   }
@@ -74,29 +106,39 @@ class MenuBuilder {
 
     const sortedRulesList = this.fuzzySystem.rulesList.sort(this._sortRules());
 
+    let lastLine = { x1: '', x2: '' };
+
     for (let i = 0; i < sortedRulesList.length; i++) {
-      const color = ColorLuminance('#95d5b2', 1 - sortedRulesList[i].sp);
-      this._addSortedRuleCell(sortedRulesList[i].number + 1);
-      this._addSortedRuleCell(sortedRulesList[i].x1.label, color);
-      this._addSortedRuleCell(sortedRulesList[i].x2.label, color);
-      this._addSortedRuleCell(sortedRulesList[i].y.label, color);
-      this._addSortedRuleCell(+sortedRulesList[i].sp.toFixed(3), color);
+      if (
+        lastLine.x1 != sortedRulesList[i].x1.label ||
+        lastLine.x2 != sortedRulesList[i].x2.label
+      ) {
+        lastLine.x1 = sortedRulesList[i].x1.label;
+        lastLine.x2 = sortedRulesList[i].x2.label;
+
+        const color = ColorLuminance('#95d5b2', 1 - sortedRulesList[i].sp);
+        this._addSortedRuleCell(sortedRulesList[i].number + 1);
+        this._addSortedRuleCell(sortedRulesList[i].x1.label, color);
+        this._addSortedRuleCell(sortedRulesList[i].x2.label, color);
+        this._addSortedRuleCell(sortedRulesList[i].y.label, color);
+        this._addSortedRuleCell(+sortedRulesList[i].sp.toFixed(3), color);
+      }
     }
   }
 
-  _addRulesTabelsHeader(label, addFunction) {
-    addFunction(label, '', 'head-label');
-    addFunction('N', '', 'head-number');
-    addFunction('IF', '', 'head-if');
-    addFunction('THEN', '', 'head-then');
-    addFunction('SP', '', 'head-sp');
-    addFunction('x1 is', '', 'head-x1');
-    addFunction('x2 is', '', 'head-x2');
-    addFunction('y is', '', 'head-y');
+  _addRulesTabelsHeader(label, addElem) {
+    addElem(label, '', 'head-label');
+    addElem('N', '', 'head-number');
+    addElem('IF', '', 'head-if');
+    addElem('THEN', '', 'head-then');
+    addElem('SP', '', 'head-sp');
+    addElem('x1 is', '', 'head-x1');
+    addElem('x2 is', '', 'head-x2');
+    addElem('y is', '', 'head-y');
   }
 
   _addUnsortedRuleCell(innerText, color, cssClass = false) {
-    this._addRuleCell(innerText, '', this.unsortedRulesListEl, cssClass);
+    this._addRuleCell(innerText, color, this.unsortedRulesListEl, cssClass);
   }
 
   _addSortedRuleCell(innerText, color, cssClass = false) {

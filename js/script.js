@@ -6,15 +6,25 @@ function handleFile(e) {
     var data = new Uint8Array(e.target.result);
     var workbook = XLSX.read(data, { type: 'array' });
 
-    const [countriesList, invalidDataLines] = new Worksheet(
+    [main.countriesList, main.invalidDataLines] = new Worksheet(
       workbook
     ).getSuitCountries();
 
-    const fuzzySystem = new FuzzySystem(countriesList);
-    const Menu = new MenuBuilder(countriesList, invalidDataLines, fuzzySystem);
+    main.init();
   };
   reader.readAsArrayBuffer(f);
 }
+
+const main = {
+  init: function () {
+    main.fuzzySystem = new FuzzySystem(main.countriesList);
+    new MenuBuilder(
+      main.countriesList,
+      main.invalidDataLines,
+      main.fuzzySystem
+    );
+  },
+};
 
 document
   .querySelector('.input_xls')

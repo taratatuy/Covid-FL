@@ -1,17 +1,15 @@
 class FuzzySystem {
   constructor(countriesList) {
     this.countriesList = countriesList;
-    this.N = 2; //TODO: Input
+    this.N = 4; //TODO: Input
     this.x1Axis = this._getAxis('x1');
     this.x2Axis = this._getAxis('x2');
     this.yAxis = this._getAxis('y');
     this.rulesList = this._getRulesList();
-    console.log(this.rulesList);
     this.rulesBase = this._getRulesBase();
-    console.log(this.rulesBase);
   }
 
-  _getRulesBase() {
+  _getRulesBaseObject() {
     const rulesBase = {};
 
     this.rulesList.forEach((r) => {
@@ -29,6 +27,58 @@ class FuzzySystem {
     });
 
     return rulesBase;
+  }
+
+  _getRulesBase() {
+    const rulesBaseObj = this._getRulesBaseObject();
+    let x1Set = new Set();
+    let x2Set = new Set();
+
+    Object.keys(rulesBaseObj).forEach((keyX1) => {
+      x1Set.add(keyX1);
+      Object.keys(rulesBaseObj[keyX1]).forEach((keyX2) => {
+        x2Set.add(keyX2);
+      });
+    });
+
+    x1Set = Array.from(x1Set);
+    x2Set = Array.from(x2Set);
+
+    let sortedX1Set = [];
+    let sortedX2Set = [];
+
+    this._sortSet(x1Set).forEach((label) => {
+      sortedX1Set.push({ label: label });
+    });
+
+    this._sortSet(x2Set).forEach((label) => {
+      sortedX2Set.push({ label: label });
+    });
+
+    const baseArray = [['', ...sortedX2Set]];
+
+    for (let i = 0; i < sortedX1Set.length; i++) {
+      baseArray[i + 1] = [sortedX1Set[i]];
+
+      for (let j = 0; j < sortedX2Set.length; j++) {
+        baseArray[i + 1][j + 1] = '';
+        const rule = rulesBaseObj[sortedX1Set[i].label][sortedX2Set[j].label];
+
+        if (rule) {
+          baseArray[i + 1][j + 1] = rule;
+        }
+      }
+    }
+
+    return baseArray;
+  }
+
+  _sortSet(set) {
+    const output = [];
+    this.x1Axis.regions.forEach((region) => {
+      if (set.includes(region.label)) output.push(region.label);
+    });
+    return output;
   }
 
   _getRulesList() {
