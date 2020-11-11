@@ -9,6 +9,7 @@ class MenuBuilder {
     this.unsortedRulesListEl = document.querySelector('.rules-list');
     this.sortedRulesListEl = document.querySelector('.rules-list-sorted');
 
+    this._hideDiscription();
     this.displayCountries();
     this.buildChart('x1-chart', 'x1-wrapper', fuzzySystem.x1Axis, 'X1');
     this.buildChart('x2-chart', 'x2-wrapper', fuzzySystem.x2Axis, 'X2');
@@ -17,6 +18,10 @@ class MenuBuilder {
     this._fillUnsortedRulesList();
     this._fillSortedRulesList();
     this._buildRulesBase();
+  }
+
+  _hideDiscription() {
+    document.querySelector('.discription').classList.add('hiden');
   }
 
   _buildRulesBase() {
