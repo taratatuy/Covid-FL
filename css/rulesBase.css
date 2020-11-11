@@ -1,13 +1,8 @@
-:root {
-  --table-start-elem: 3;
-}
-
 .rules-base-header,
 .rules-base-wrapper {
   width: 100%;
   display: grid;
   grid-template-columns: minmax(300px, 1fr);
-  /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
   overflow: auto;
 }
 
@@ -83,6 +78,5 @@
 
 .x2Color,
 .rules-base > .rules-base-line:nth-of-type(1) > div:not(:first-child) {
-  /* background-color: #c6def1; */
   background-color: #c8e7ff;
 }

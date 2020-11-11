@@ -22,6 +22,7 @@ class MenuBuilder {
   _buildRulesBase() {
     const rulesBaseEl = document.querySelector('.rules-base');
     rulesBaseEl.innerHTML = '';
+
     const rulesBaseHeaderEl = document.querySelector('.rules-base-header');
     rulesBaseHeaderEl.innerHTML = '';
 
