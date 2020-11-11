@@ -77,7 +77,7 @@ class Axis {
   _getPeaks(min, max, interval, N) {
     const peaks = [];
     const step = +(interval / (2 * N)).toFixed(6);
-    for (let i = min; +i.toFixed(5) < +(max + step).toFixed(5); i += step) {
+    for (let i = min; +i.toFixed(4) < +(max + step).toFixed(4); i += step) {
       peaks.push(+i.toFixed(6));
     }
     return peaks;

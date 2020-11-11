@@ -15,6 +15,15 @@ function handleFile(e) {
   reader.readAsArrayBuffer(f);
 }
 
+function changeN(e) {
+  if (e.target.value < 1) e.target.value = 1;
+
+  if (main.N == e.target.value) return;
+
+  main.N = e.target.value;
+  if (main.countriesList) main.init();
+}
+
 const main = {
   N: 2,
   init() {
@@ -26,3 +35,5 @@ const main = {
 document
   .querySelector('.input_xls')
   .addEventListener('change', handleFile, false);
+
+document.querySelector('.input_n').addEventListener('change', changeN, false);

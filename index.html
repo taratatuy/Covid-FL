@@ -24,15 +24,22 @@
     <header></header>
     <main class="row m-0 justify-content-around">
         <div class="side-data col-sm-12 col-md-5 col-lg-4 col-xl-3">
-            <div class="input-excel custom-file mb-1">
-                <input class="input_xls custom-file-input" type="file" id="xls-file-input">
-                <label class="custom-file-label" for="xls-file-input" aria-describedby="inputGroupFileAddon02">Choose
-                    file</label>
+            <div class="side-data-wrapper sticky-top pt-4">
+                <div class="input-excel custom-file mb-2">
+                    <input class="input_xls custom-file-input" type="file" id="xls-file-input">
+                    <label class="custom-file-label" for="xls-file-input"
+                        aria-describedby="inputGroupFileAddon02">Choose
+                        file</label>
+                </div>
+                <div class="input-group mb-2">
+                    <span class="input-group-text">N:</span>
+                    <input type="number" class="input_n form-control" value="2">
+                </div>
+                <div class="countries-wrapper">
+                    <div class="countries-list"></div>
+                </div>
+                <div class="invalid-countries"></div>
             </div>
-            <div class="countries-wrapper">
-                <div class="countries-list"></div>
-            </div>
-            <div class="invalid-countries"></div>
         </div>
         <div class="data-display col-sm-12 col-md-6 col-lg-8 col-xl-8 p-0">
             <div class="x1-wrapper"></div>
