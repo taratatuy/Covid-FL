@@ -15,7 +15,7 @@ class CenterRegion {
     }
 
     if (output < 0) output = 0;
-    return output;
+    return +output.toFixed(5);
   }
 
   _grow(x) {
@@ -48,7 +48,7 @@ class CenterRegion {
   }
 
   getAvgY(mu) {
-    return this._getUpperSquare(mu) / this._getSquare(mu);
+    return +(this._getUpperSquare(mu) / this._getSquare(mu)).toFixed(6);
   }
 
   _getSquare(mu) {
@@ -64,8 +64,8 @@ class CenterRegion {
     const [a, b] = this._getX(mu);
     return +(
       this._upperS1(this.s, a) +
-      r._upperS2(a, b) +
-      r._upperS3(b, this.e)
+      this._upperS2(a, b) +
+      this._upperS3(b, this.e)
     ).toFixed(6);
   }
 
@@ -123,10 +123,3 @@ class CenterRegion {
     );
   }
 }
-
-// const r = new CenterRegion(0, 5, 10);
-
-// console.log(r._getSquare(0.4));
-// console.log(r._getUpperSquare(0.4));
-
-// console.log(r.getAvgY(0.4));

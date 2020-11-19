@@ -39,7 +39,7 @@ class Axis {
         }
       });
       output.push({
-        xValue: values[i],
+        region: maxRegion,
         label: maxRegion.label,
         yValue: funcMaxVal,
       });

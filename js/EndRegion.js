@@ -10,7 +10,7 @@ class EndRegion {
     if (x < this.p) output = this._grow(x);
 
     if (output < 0) output = 0;
-    return output;
+    return +output.toFixed(5);
   }
 
   _grow(x) {
@@ -18,11 +18,6 @@ class EndRegion {
   }
 
   getAvgY(mu) {
-    return mu * (this.p - this.s) + this.s;
+    return +(mu * (this.p - this.s) + this.s).toFixed(6);
   }
 }
-
-// const r = new EndRegion(8, 10);
-
-// console.log(r.Mu(8.5));
-// console.log(r.getAvgY(0.25));

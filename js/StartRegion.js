@@ -10,7 +10,7 @@ class StartRegion {
     if (x > this.p) output = this._fall(x);
 
     if (output < 0) output = 0;
-    return output;
+    return +output.toFixed(5);
   }
 
   _fall(x) {
@@ -18,11 +18,6 @@ class StartRegion {
   }
 
   getAvgY(mu) {
-    return this.e - mu * (this.e - this.p);
+    return +(this.e - mu * (this.e - this.p)).toFixed(6);
   }
 }
-
-// const r = new StartRegion(0, 2);
-
-// console.log(r.Mu(3));
-// console.log(r.getAvgY(0.5));
