@@ -1,8 +1,8 @@
 class StartRegion {
-  constructor(p, e) {
+  constructor(p, e, label) {
     this.p = p;
     this.e = e;
-    this.label = null;
+    this.label = label;
   }
 
   Mu(x) {
@@ -19,10 +19,6 @@ class StartRegion {
 
   getAvgY(mu) {
     return this.e - mu * (this.e - this.p);
-  }
-
-  setLabel(label) {
-    this.label = label;
   }
 }
 

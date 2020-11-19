@@ -1,9 +1,9 @@
 class CenterRegion {
-  constructor(s, p, e) {
+  constructor(s, p, e, label) {
     this.s = s;
     this.p = p;
     this.e = e;
-    this.label = null;
+    this.label = label;
   }
 
   Mu(x) {
@@ -121,10 +121,6 @@ class CenterRegion {
       ((this.e * x ** 2) / 2) * (1 / (this.e - this.p)) -
       (x ** 3 / 3) * (1 / (this.e - this.p))
     );
-  }
-
-  setLabel(label) {
-    this.label = label;
   }
 }
 
