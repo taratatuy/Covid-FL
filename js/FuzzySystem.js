@@ -39,33 +39,32 @@ class FuzzySystem {
       if (!rulesBaseObj[x1Regions[i].label]) continue;
 
       for (let j = 0; j < x2Regions.length; j++) {
-        if (rulesBaseObj[x1Regions[i].label][x2Regions[j].label]) {
-          const min = Math.min(x1Regions[i].Mu(x1), x2Regions[j].Mu(x2));
+        if (!rulesBaseObj[x1Regions[i].label][x2Regions[j].label]) continue;
 
-          upperSum +=
-            x1Regions[i].Mu(x1) *
-            x2Regions[j].Mu(x2) *
-            rulesBaseObj[x1Regions[i].label][
-              x2Regions[j].label
-            ].yRegion.getAvgY(min);
+        const min = Math.min(x1Regions[i].Mu(x1), x2Regions[j].Mu(x2));
 
-          lowerSum += x1Regions[i].Mu(x1) * x2Regions[j].Mu(x2);
+        upperSum +=
+          x1Regions[i].Mu(x1) *
+          x2Regions[j].Mu(x2) *
+          rulesBaseObj[x1Regions[i].label][x2Regions[j].label].yRegion.getAvgY(
+            min
+          );
 
-          defuzzComponents.push({
-            x1RuleLabel: x1Regions[i].label,
-            x2RuleLabel: x2Regions[j].label,
-            yRuleLabel:
-              rulesBaseObj[x1Regions[i].label][x2Regions[j].label].yRegion
-                .label,
-            x1Mu: x1Regions[i].Mu(x1),
-            x2Mu: x2Regions[j].Mu(x2),
-            tau: x1Regions[i].Mu(x1) * x2Regions[j].Mu(x2),
-            min: min,
-            avgY: rulesBaseObj[x1Regions[i].label][
-              x2Regions[j].label
-            ].yRegion.getAvgY(min),
-          });
-        }
+        lowerSum += x1Regions[i].Mu(x1) * x2Regions[j].Mu(x2);
+
+        defuzzComponents.push({
+          x1RuleLabel: x1Regions[i].label,
+          x2RuleLabel: x2Regions[j].label,
+          yRuleLabel:
+            rulesBaseObj[x1Regions[i].label][x2Regions[j].label].yRegion.label,
+          x1Mu: x1Regions[i].Mu(x1),
+          x2Mu: x2Regions[j].Mu(x2),
+          tau: x1Regions[i].Mu(x1) * x2Regions[j].Mu(x2),
+          min: min,
+          avgY: rulesBaseObj[x1Regions[i].label][
+            x2Regions[j].label
+          ].yRegion.getAvgY(min),
+        });
       }
     }
     upperSum = +upperSum.toFixed(6);
