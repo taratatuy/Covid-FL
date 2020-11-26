@@ -55,6 +55,12 @@ class FuzzySystem {
             rulesBaseObj[x1Regions[i].label][x2Regions[j].label].yRegion.label,
           x1Mu: x1Regions[i].Mu(x1),
           x2Mu: x2Regions[j].Mu(x2),
+
+          // Alternative tau from rule:
+          // tau: +rulesBaseObj[x1Regions[i].label][
+          //   x2Regions[j].label
+          // ].tau.toFixed(6),
+
           tau: +(x1Regions[i].Mu(x1) * x2Regions[j].Mu(x2)).toFixed(6),
           min: min,
           avgY: rulesBaseObj[x1Regions[i].label][
@@ -83,6 +89,7 @@ class FuzzySystem {
         rulesBase[r.x1.label][r.x2.label].label = r.y.label;
         rulesBase[r.x1.label][r.x2.label].sp = r.sp;
         rulesBase[r.x1.label][r.x2.label].yRegion = r.y.region;
+        rulesBase[r.x1.label][r.x2.label].tau = r.tau;
       }
     });
 
@@ -153,6 +160,7 @@ class FuzzySystem {
           this.x1Axis.baseData[i].yValue *
           this.x2Axis.baseData[i].yValue *
           this.yAxis.baseData[i].yValue,
+        tau: this.x1Axis.baseData[i].yValue * this.x2Axis.baseData[i].yValue,
       });
     }
 
