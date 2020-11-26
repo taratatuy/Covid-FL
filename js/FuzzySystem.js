@@ -7,11 +7,6 @@ class FuzzySystem {
     this.yAxis = this._getAxis('y');
     this.rulesList = this._getRulesList();
     this.rulesBase = this._getRulesBase();
-
-    // this.defuzzification(3.9942, 10);
-    // this.defuzzification(2.436, 5.8527);
-    // this.defuzzification(3.733, 6.0207);
-    this.defuzzification(5.22, 7.99);
   }
 
   defuzzification(x1, x2) {
@@ -55,11 +50,12 @@ class FuzzySystem {
         defuzzComponents.push({
           x1RuleLabel: x1Regions[i].label,
           x2RuleLabel: x2Regions[j].label,
+          sp: rulesBaseObj[x1Regions[i].label][x2Regions[j].label].sp,
           yRuleLabel:
             rulesBaseObj[x1Regions[i].label][x2Regions[j].label].yRegion.label,
           x1Mu: x1Regions[i].Mu(x1),
           x2Mu: x2Regions[j].Mu(x2),
-          tau: x1Regions[i].Mu(x1) * x2Regions[j].Mu(x2),
+          tau: +(x1Regions[i].Mu(x1) * x2Regions[j].Mu(x2)).toFixed(6),
           min: min,
           avgY: rulesBaseObj[x1Regions[i].label][
             x2Regions[j].label
@@ -70,8 +66,7 @@ class FuzzySystem {
     upperSum = +upperSum.toFixed(6);
     lowerSum = +lowerSum.toFixed(6);
 
-    console.log(defuzzComponents);
-    console.log(x1, x2, +(upperSum / lowerSum).toFixed(6));
+    return [+(upperSum / lowerSum).toFixed(6), defuzzComponents];
   }
 
   _getRulesBaseObject() {
